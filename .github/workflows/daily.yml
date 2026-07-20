@@ -1,0 +1,55 @@
+name: Daily Job Matches
+
+# Runs every day at 6:00 AM IST (00:30 UTC), and on manual trigger.
+on:
+  schedule:
+    - cron: "30 0 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write   # allow committing the generated report back to the repo
+
+jobs:
+  match:
+    runs-on: ubuntu-latest
+    env:
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+      # Search config (override here or via repo Variables if you prefer)
+      JOB_KEYWORDS: "AI Engineer, GenAI Engineer, Machine Learning Engineer, LLM Engineer, Agentic AI, Python Developer"
+      JOB_LOCATION: "Bangalore, Hyderabad"
+      JOB_REMOTE: "false"
+      MATCH_THRESHOLD: "75"
+      MAX_JOBS_PER_RUN: "100"
+      FULL_NAME: "Neelapalli Abhinash"
+      EMAIL: "neelapalliabhinash1458@gmail.com"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements-ci.txt
+
+      - name: Run daily pipeline
+        run: python -m src.main daily --fresh
+
+      - name: Commit the day's report
+        run: |
+          git config user.name "job-hunt-bot"
+          git config user.email "actions@github.com"
+          git add data/reports LATEST_MATCHES.md || true
+          git commit -m "Daily job matches $(date -u +%Y-%m-%d)" || echo "no changes"
+          git push || echo "nothing to push"
+
+      - name: Upload report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: job-matches
+          path: |
+            data/reports/*.html
+            data/reports/*.md
+          if-no-files-found: ignore

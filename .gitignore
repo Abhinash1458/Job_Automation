@@ -1,0 +1,29 @@
+# Secrets
+.env
+
+# Virtual environment
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Local data (raw resume, scraped jobs, drafts, tracker DB, browser profile, logs)
+data/resume/*
+!data/resume/.gitkeep
+data/jobs.db
+data/drafts/*
+!data/drafts/.gitkeep
+data/raw/*
+!data/raw/.gitkeep
+data/applications/*
+!data/applications/.gitkeep
+data/logs/
+data/.browser/
+
+# NOTE: data/profile.json IS committed on purpose — the CI job needs it to
+# score jobs against your resume. It contains resume content (no secrets).
+# data/reports/ IS committed so you can read the daily matches on GitHub.

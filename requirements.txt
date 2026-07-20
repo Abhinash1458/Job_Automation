@@ -1,0 +1,25 @@
+# Core LLM (Anthropic native; OpenAI SDK also drives Groq / xAI / OpenAI)
+anthropic>=0.69
+openai>=1.40
+
+# Interactive review checklist (local web app)
+flask>=3.0
+
+# Config / env
+python-dotenv>=1.0
+
+# Job scraping
+apify-client>=1.7        # Apify actors (LinkedIn/Indeed/etc.)
+requests>=2.32           # free scrapers / HTTP
+beautifulsoup4>=4.12     # HTML parsing for free scrapers / contact finding
+
+# Resume parsing + company list
+pypdf>=5.0               # read PDF resumes
+python-docx>=1.1         # read DOCX resumes
+openpyxl>=3.1            # read the curated company allowlist (data/companies.xlsx)
+
+# Assisted apply (browser automation)
+playwright>=1.44        # opens each approved job pre-filled; run `playwright install chromium`
+
+# Nice-to-have
+rich>=13.7               # readable console output
