@@ -30,4 +30,5 @@ data/profile.json
 *.pdf
 data/reports/*
 !data/reports/.gitkeep
-LATEST_MATCHES.md
+# LATEST_MATCHES.md IS committed by CI so you can view it as one page on GitHub.
+# It contains only job listings + fit notes (no resume / contact details).

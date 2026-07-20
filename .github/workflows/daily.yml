@@ -7,7 +7,7 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: read
+  contents: write   # commit LATEST_MATCHES.md back so it's viewable as one page
 
 jobs:
   match:
@@ -48,8 +48,17 @@ jobs:
       - name: Run daily pipeline
         run: python -m src.main daily --fresh
 
-      # Deliver results as a downloadable artifact (not committed to the repo).
-      - name: Upload matches
+      # Publish the matches page back to the repo (one clickable link to view).
+      - name: Publish LATEST_MATCHES.md
+        run: |
+          git config user.name "job-hunt-bot"
+          git config user.email "actions@github.com"
+          git add -f LATEST_MATCHES.md
+          git commit -m "Job matches $(date -u +%Y-%m-%d)" || echo "no changes"
+          git push || echo "nothing to push"
+
+      # Also keep a downloadable copy (HTML + Markdown) for each run.
+      - name: Upload matches artifact
         uses: actions/upload-artifact@v4
         with:
           name: job-matches-${{ github.run_number }}
