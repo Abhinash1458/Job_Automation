@@ -1,0 +1,302 @@
+{
+  "Tenstorrent": {
+    "platform": "greenhouse",
+    "slug": "tenstorrent"
+  },
+  "Capital One": {
+    "platform": "lever",
+    "slug": "capital"
+  },
+  "AB InBev": {
+    "platform": "greenhouse",
+    "slug": "abinbev"
+  },
+  "NICE": {
+    "platform": "greenhouse",
+    "slug": "nice"
+  },
+  "Netskope": {
+    "platform": "greenhouse",
+    "slug": "netskope"
+  },
+  "Zscaler": {
+    "platform": "greenhouse",
+    "slug": "zscaler"
+  },
+  "Bloomreach": {
+    "platform": "greenhouse",
+    "slug": "bloomreach"
+  },
+  "Nextiva": {
+    "platform": "greenhouse",
+    "slug": "nextiva"
+  },
+  "Twilio": {
+    "platform": "greenhouse",
+    "slug": "twilio"
+  },
+  "Five9": {
+    "platform": "greenhouse",
+    "slug": "five9"
+  },
+  "Databricks": {
+    "platform": "greenhouse",
+    "slug": "databricks"
+  },
+  "Fivetran": {
+    "platform": "greenhouse",
+    "slug": "fivetran"
+  },
+  "Dremio": {
+    "platform": "greenhouse",
+    "slug": "dremio"
+  },
+  "Commvault": {
+    "platform": "greenhouse",
+    "slug": "commvault"
+  },
+  "Rubrik": {
+    "platform": "greenhouse",
+    "slug": "rubrik"
+  },
+  "MongoDB": {
+    "platform": "greenhouse",
+    "slug": "mongodb"
+  },
+  "JFrog": {
+    "platform": "greenhouse",
+    "slug": "jfrog"
+  },
+  "Acquia": {
+    "platform": "greenhouse",
+    "slug": "acquia"
+  },
+  "Coupang": {
+    "platform": "greenhouse",
+    "slug": "coupang"
+  },
+  "Skillsoft": {
+    "platform": "greenhouse",
+    "slug": "skillsoft"
+  },
+  "Charles Schwab": {
+    "platform": "greenhouse",
+    "slug": "charles"
+  },
+  "Bill.com": {
+    "platform": "greenhouse",
+    "slug": "billcom"
+  },
+  "Apex Group": {
+    "platform": "greenhouse",
+    "slug": "apex"
+  },
+  "Nintendo": {
+    "platform": "greenhouse",
+    "slug": "nintendo"
+  },
+  "Riot Games": {
+    "platform": "greenhouse",
+    "slug": "riotgames"
+  },
+  "Rockstar Games": {
+    "platform": "greenhouse",
+    "slug": "rockstargames"
+  },
+  "SolarWinds": {
+    "platform": "greenhouse",
+    "slug": "solarwinds"
+  },
+  "Okta": {
+    "platform": "greenhouse",
+    "slug": "okta"
+  },
+  "MetLife": {
+    "platform": "lever",
+    "slug": "metlife"
+  },
+  "Flexport": {
+    "platform": "greenhouse",
+    "slug": "flexport"
+  },
+  "Zeta Global": {
+    "platform": "lever",
+    "slug": "zeta"
+  },
+  "Disney+ Hotstar": {
+    "platform": "greenhouse",
+    "slug": "disney"
+  },
+  "Spotify": {
+    "platform": "lever",
+    "slug": "spotify"
+  },
+  "Align Technology": {
+    "platform": "greenhouse",
+    "slug": "align"
+  },
+  "Extreme Networks": {
+    "platform": "lever",
+    "slug": "extremenetworks"
+  },
+  "New Relic": {
+    "platform": "greenhouse",
+    "slug": "newrelic"
+  },
+  "PagerDuty": {
+    "platform": "greenhouse",
+    "slug": "pagerduty"
+  },
+  "Adyen": {
+    "platform": "greenhouse",
+    "slug": "adyen"
+  },
+  "Stripe": {
+    "platform": "greenhouse",
+    "slug": "stripe"
+  },
+  "Anaplan": {
+    "platform": "greenhouse",
+    "slug": "anaplan"
+  },
+  "Celonis": {
+    "platform": "greenhouse",
+    "slug": "celonis"
+  },
+  "Elsevier (RELX)": {
+    "platform": "greenhouse",
+    "slug": "elsevier"
+  },
+  "Elastic": {
+    "platform": "greenhouse",
+    "slug": "elastic"
+  },
+  "Lattice Semiconductor": {
+    "platform": "greenhouse",
+    "slug": "lattice"
+  },
+  "Samsung Semiconductor": {
+    "platform": "greenhouse",
+    "slug": "samsungsemiconductor"
+  },
+  "LinkedIn": {
+    "platform": "greenhouse",
+    "slug": "linkedin"
+  },
+  "Coupa Software": {
+    "platform": "lever",
+    "slug": "coupa"
+  },
+  "Pure Storage": {
+    "platform": "greenhouse",
+    "slug": "purestorage"
+  },
+  "Dropbox": {
+    "platform": "greenhouse",
+    "slug": "dropbox"
+  },
+  "Roku": {
+    "platform": "greenhouse",
+    "slug": "roku"
+  },
+  "Agoda": {
+    "platform": "greenhouse",
+    "slug": "agoda"
+  },
+  "Airbnb": {
+    "platform": "greenhouse",
+    "slug": "airbnb"
+  },
+  "Tripadvisor": {
+    "platform": "greenhouse",
+    "slug": "tripadvisor"
+  },
+  "Netradyne": {
+    "platform": "greenhouse",
+    "slug": "netradyne"
+  },
+  "InMobi": {
+    "platform": "greenhouse",
+    "slug": "inmobi"
+  },
+  "Glance": {
+    "platform": "greenhouse",
+    "slug": "glance"
+  },
+  "Observe.ai": {
+    "platform": "greenhouse",
+    "slug": "observeai"
+  },
+  "Sigmoid": {
+    "platform": "greenhouse",
+    "slug": "sigmoid"
+  },
+  "HackerRank": {
+    "platform": "greenhouse",
+    "slug": "hackerrank"
+  },
+  "Postman": {
+    "platform": "greenhouse",
+    "slug": "postman"
+  },
+  "Freshprints": {
+    "platform": "greenhouse",
+    "slug": "freshprints"
+  },
+  "Meesho": {
+    "platform": "lever",
+    "slug": "meesho"
+  },
+  "Bluestone": {
+    "platform": "greenhouse",
+    "slug": "bluestone"
+  },
+  "CRED": {
+    "platform": "lever",
+    "slug": "cred"
+  },
+  "PhonePe": {
+    "platform": "greenhouse",
+    "slug": "phonepe"
+  },
+  "Slice": {
+    "platform": "greenhouse",
+    "slug": "slice"
+  },
+  "Zeta": {
+    "platform": "lever",
+    "slug": "zeta"
+  },
+  "Groww": {
+    "platform": "greenhouse",
+    "slug": "groww"
+  },
+  "Clear (ClearTax)": {
+    "platform": "greenhouse",
+    "slug": "clear"
+  },
+  "Contentstack": {
+    "platform": "greenhouse",
+    "slug": "contentstack"
+  },
+  "Atomicwork": {
+    "platform": "greenhouse",
+    "slug": "atomicwork"
+  },
+  "Saviynt": {
+    "platform": "lever",
+    "slug": "saviynt"
+  },
+  "Porter": {
+    "platform": "lever",
+    "slug": "porter"
+  },
+  "Zenoti": {
+    "platform": "greenhouse",
+    "slug": "zenoti"
+  },
+  "MindTickle": {
+    "platform": "lever",
+    "slug": "mindtickle"
+  }
+}
