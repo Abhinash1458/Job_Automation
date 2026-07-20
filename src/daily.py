@@ -88,17 +88,15 @@ def run(tailor_top: int = 20, fresh: bool = False) -> str:
     close = [j for s, j in scored if s >= config.MATCH_THRESHOLD]
     today = _today()
     for i, job in enumerate(close):
-        materials = None
+        # always keep the fit reasons; add the tailored packet for the top ones
+        materials = {"reasons": job["_reasons"], "missing": job["_missing"]}
         if i < tailor_top:
             try:
-                materials = tailor.tailor(profile, job)
+                materials.update(tailor.tailor(profile, job))
             except Exception as exc:  # noqa: BLE001
                 print(f"      tailoring failed for {job.get('company')}: {exc}")
-        tracker.update(
-            job["url"], status="for_review", surfaced_date=today,
-            materials=materials if materials else {"reasons": job["_reasons"],
-                                                   "missing": job["_missing"]},
-        )
+        tracker.update(job["url"], status="for_review", surfaced_date=today,
+                       materials=materials)
     print(f"      {len(close)} close matches surfaced")
 
     print("[6/6] Writing daily reports (HTML + Markdown) ...")
