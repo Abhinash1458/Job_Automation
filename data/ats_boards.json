@@ -3,6 +3,26 @@
     "platform": "greenhouse",
     "slug": "tenstorrent"
   },
+  "Collins Aerospace": {
+    "platform": "recruitee",
+    "slug": "collins"
+  },
+  "Automation Anywhere": {
+    "platform": "recruitee",
+    "slug": "automation"
+  },
+  "UiPath": {
+    "platform": "ashby",
+    "slug": "uipath"
+  },
+  "Continental": {
+    "platform": "smartrecruiters",
+    "slug": "continental"
+  },
+  "Standard Chartered": {
+    "platform": "recruitee",
+    "slug": "standard"
+  },
   "Capital One": {
     "platform": "lever",
     "slug": "capital"
@@ -11,9 +31,21 @@
     "platform": "greenhouse",
     "slug": "abinbev"
   },
+  "Kimberly-Clark": {
+    "platform": "smartrecruiters",
+    "slug": "kimberlyclark"
+  },
+  "Salesforce": {
+    "platform": "recruitee",
+    "slug": "salesforce"
+  },
   "NICE": {
     "platform": "greenhouse",
     "slug": "nice"
+  },
+  "Celanese": {
+    "platform": "smartrecruiters",
+    "slug": "celanese"
   },
   "Netskope": {
     "platform": "greenhouse",
@@ -35,13 +67,25 @@
     "platform": "greenhouse",
     "slug": "twilio"
   },
+  "Kenvue": {
+    "platform": "smartrecruiters",
+    "slug": "kenvue"
+  },
   "Five9": {
     "platform": "greenhouse",
     "slug": "five9"
   },
+  "Experian": {
+    "platform": "smartrecruiters",
+    "slug": "experian"
+  },
   "Databricks": {
     "platform": "greenhouse",
     "slug": "databricks"
+  },
+  "Snowflake": {
+    "platform": "ashby",
+    "slug": "snowflake"
   },
   "Fivetran": {
     "platform": "greenhouse",
@@ -51,6 +95,10 @@
     "platform": "greenhouse",
     "slug": "dremio"
   },
+  "Veritas Technologies": {
+    "platform": "recruitee",
+    "slug": "veritas"
+  },
   "Commvault": {
     "platform": "greenhouse",
     "slug": "commvault"
@@ -58,6 +106,10 @@
   "Rubrik": {
     "platform": "greenhouse",
     "slug": "rubrik"
+  },
+  "Confluent": {
+    "platform": "ashby",
+    "slug": "confluent"
   },
   "MongoDB": {
     "platform": "greenhouse",
@@ -75,9 +127,17 @@
     "platform": "greenhouse",
     "slug": "coupang"
   },
+  "Wayfair": {
+    "platform": "smartrecruiters",
+    "slug": "wayfair"
+  },
   "Skillsoft": {
     "platform": "greenhouse",
     "slug": "skillsoft"
+  },
+  "ServiceNow": {
+    "platform": "smartrecruiters",
+    "slug": "servicenow"
   },
   "Charles Schwab": {
     "platform": "greenhouse",
@@ -103,6 +163,10 @@
     "platform": "greenhouse",
     "slug": "rockstargames"
   },
+  "Change Healthcare": {
+    "platform": "ashby",
+    "slug": "change"
+  },
   "SolarWinds": {
     "platform": "greenhouse",
     "slug": "solarwinds"
@@ -110,6 +174,14 @@
   "Okta": {
     "platform": "greenhouse",
     "slug": "okta"
+  },
+  "Parker Hannifin": {
+    "platform": "ashby",
+    "slug": "parker"
+  },
+  "Legal & General": {
+    "platform": "recruitee",
+    "slug": "legal"
   },
   "MetLife": {
     "platform": "lever",
@@ -123,6 +195,10 @@
     "platform": "lever",
     "slug": "zeta"
   },
+  "News Corp Global Technology": {
+    "platform": "smartrecruiters",
+    "slug": "newscorp"
+  },
   "Disney+ Hotstar": {
     "platform": "greenhouse",
     "slug": "disney"
@@ -134,6 +210,30 @@
   "Align Technology": {
     "platform": "greenhouse",
     "slug": "align"
+  },
+  "Intuitive Surgical": {
+    "platform": "smartrecruiters",
+    "slug": "intuitive"
+  },
+  "Kioxia": {
+    "platform": "smartrecruiters",
+    "slug": "kioxia"
+  },
+  "SanDisk": {
+    "platform": "smartrecruiters",
+    "slug": "sandisk"
+  },
+  "Grab": {
+    "platform": "smartrecruiters",
+    "slug": "grab"
+  },
+  "Uber": {
+    "platform": "smartrecruiters",
+    "slug": "uber"
+  },
+  "Arista Networks": {
+    "platform": "smartrecruiters",
+    "slug": "aristanetworks"
   },
   "Extreme Networks": {
     "platform": "lever",
@@ -155,6 +255,14 @@
     "platform": "greenhouse",
     "slug": "stripe"
   },
+  "Visa": {
+    "platform": "smartrecruiters",
+    "slug": "visa"
+  },
+  "AbbVie": {
+    "platform": "smartrecruiters",
+    "slug": "abbvie"
+  },
   "Anaplan": {
     "platform": "greenhouse",
     "slug": "anaplan"
@@ -167,13 +275,37 @@
     "platform": "greenhouse",
     "slug": "elsevier"
   },
+  "Wabtec": {
+    "platform": "smartrecruiters",
+    "slug": "wabtec"
+  },
+  "Gap Inc.": {
+    "platform": "smartrecruiters",
+    "slug": "gapinc"
+  },
   "Elastic": {
     "platform": "greenhouse",
     "slug": "elastic"
   },
+  "Applied Materials": {
+    "platform": "ashby",
+    "slug": "applied"
+  },
+  "Ampere Computing": {
+    "platform": "recruitee",
+    "slug": "ampere"
+  },
   "Lattice Semiconductor": {
     "platform": "greenhouse",
     "slug": "lattice"
+  },
+  "Microchip Technology": {
+    "platform": "smartrecruiters",
+    "slug": "microchip"
+  },
+  "Renesas Electronics": {
+    "platform": "smartrecruiters",
+    "slug": "renesaselectronics"
   },
   "Samsung Semiconductor": {
     "platform": "greenhouse",
@@ -199,6 +331,10 @@
     "platform": "greenhouse",
     "slug": "roku"
   },
+  "Meta (Facebook)": {
+    "platform": "recruitee",
+    "slug": "meta"
+  },
   "Agoda": {
     "platform": "greenhouse",
     "slug": "agoda"
@@ -215,9 +351,17 @@
     "platform": "greenhouse",
     "slug": "netradyne"
   },
+  "d-Matrix": {
+    "platform": "ashby",
+    "slug": "d-matrix"
+  },
   "InMobi": {
     "platform": "greenhouse",
     "slug": "inmobi"
+  },
+  "Tiger Analytics": {
+    "platform": "ashby",
+    "slug": "tiger"
   },
   "Glance": {
     "platform": "greenhouse",
@@ -251,9 +395,17 @@
     "platform": "greenhouse",
     "slug": "bluestone"
   },
+  "Unacademy": {
+    "platform": "smartrecruiters",
+    "slug": "unacademy"
+  },
   "CRED": {
     "platform": "lever",
     "slug": "cred"
+  },
+  "Navi": {
+    "platform": "ashby",
+    "slug": "navi"
   },
   "PhonePe": {
     "platform": "greenhouse",
@@ -267,6 +419,10 @@
     "platform": "lever",
     "slug": "zeta"
   },
+  "Refyne": {
+    "platform": "smartrecruiters",
+    "slug": "refyne"
+  },
   "Groww": {
     "platform": "greenhouse",
     "slug": "groww"
@@ -274,6 +430,18 @@
   "Clear (ClearTax)": {
     "platform": "greenhouse",
     "slug": "clear"
+  },
+  "Swiggy": {
+    "platform": "smartrecruiters",
+    "slug": "swiggy"
+  },
+  "Bureau": {
+    "platform": "ashby",
+    "slug": "bureau"
+  },
+  "Sarvam AI": {
+    "platform": "ashby",
+    "slug": "sarvam"
   },
   "Contentstack": {
     "platform": "greenhouse",
@@ -287,9 +455,41 @@
     "platform": "lever",
     "slug": "saviynt"
   },
+  "Turtlemint": {
+    "platform": "smartrecruiters",
+    "slug": "turtlemint"
+  },
   "Porter": {
     "platform": "lever",
     "slug": "porter"
+  },
+  "Zeotap": {
+    "platform": "recruitee",
+    "slug": "zeotap"
+  },
+  "Bounce": {
+    "platform": "ashby",
+    "slug": "bounce"
+  },
+  "Natco Pharma": {
+    "platform": "smartrecruiters",
+    "slug": "natcopharma"
+  },
+  "NoBroker": {
+    "platform": "smartrecruiters",
+    "slug": "nobroker"
+  },
+  "CynLr (Cyngnus Labs)": {
+    "platform": "ashby",
+    "slug": "cynlr"
+  },
+  "Freshworks": {
+    "platform": "smartrecruiters",
+    "slug": "freshworks"
+  },
+  "Whatfix": {
+    "platform": "smartrecruiters",
+    "slug": "whatfix"
   },
   "Zenoti": {
     "platform": "greenhouse",

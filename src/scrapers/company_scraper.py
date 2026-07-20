@@ -189,11 +189,20 @@ def _slugs(name: str) -> list[str]:
     return list(dict.fromkeys(cands))
 
 
+def _get_fast(url: str):
+    """Single-shot GET with a short timeout — for bulk board detection."""
+    try:
+        r = requests.get(url, headers=HEAD, timeout=6)
+        return r.json() if r.status_code == 200 else None
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def _find_board(name: str):
     """Return (platform, slug) for the first board that exists with jobs."""
     for slug in _slugs(name):
         for platform, tmpl in _DETECT.items():
-            if _has_jobs(platform, _get(tmpl.format(s=slug))):
+            if _has_jobs(platform, _get_fast(tmpl.format(s=slug))):
                 return (platform, slug)
     return None
 
