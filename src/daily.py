@@ -122,10 +122,23 @@ def run(tailor_top: int | None = None, fresh: bool = False) -> str:
             seen[job["url"]] = today
     SEEN_PATH.write_text(json.dumps(seen, indent=2), encoding="utf-8")
 
+    # Build enriched rows, sorted: recent + best-fit first, stale (>30d) last.
+    rows = []
+    for job in close:
+        d = report.days_old(job.get("posted", ""))
+        rows.append({
+            "score": job["_score"], "title": job.get("title", ""),
+            "company": job.get("company", ""), "location": job.get("location", ""),
+            "url": job["url"], "reasons": job.get("_reasons", []),
+            "posted": job.get("posted", ""), "days_old": d,
+            "new": job["url"] in new_urls,
+        })
+    rows.sort(key=lambda r: (
+        (r["days_old"] is not None and r["days_old"] > 30),  # stale sinks
+        -(r["score"] or 0),                                  # then best fit
+    ))
+
     print(f"[6/6] Writing daily reports ({len(new_urls)} new today) ...")
-    jobs = tracker.top_for_review(today, 10000)
-    html_path = report.build(today, jobs)
-    md_path = report.build_markdown(today, jobs, new_urls)
-    print(f"      HTML: {html_path}")
+    md_path = report.build_markdown(today, rows, new_urls)
     print(f"      Markdown: {md_path}")
     return str(md_path)

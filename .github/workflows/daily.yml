@@ -54,8 +54,8 @@ jobs:
         run: |
           git config user.name "job-hunt-bot"
           git config user.email "actions@github.com"
-          git add -f LATEST_MATCHES.md data/seen_jobs.json
-          git commit -m "Job matches $(date -u +%Y-%m-%d)" || echo "no changes"
+          git add -f LATEST_MATCHES.md data/seen_jobs.json matches/
+          git commit -m "Job matches $(date -u +'%Y-%m-%d %H:%M') UTC" || echo "no changes"
           git push || echo "nothing to push"
 
       # Also keep a downloadable copy (HTML + Markdown) for each run.

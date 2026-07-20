@@ -6,11 +6,30 @@ from __future__ import annotations
 
 import html
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 
 from . import config
 
 REPORTS_DIR = config.DATA_DIR / "reports"
+# Committed folder: one dated+timestamped markdown file per run.
+MATCHES_DIR = config.ROOT / "matches"
+
+
+def days_old(posted: str) -> int | None:
+    """Age of a posting in days from an ISO-ish date string, or None if unknown."""
+    if not posted:
+        return None
+    s = posted.strip().replace("Z", "+00:00")
+    for candidate in (s, s[:10]):
+        try:
+            dt = datetime.fromisoformat(candidate)
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            return max(0, (datetime.now(timezone.utc) - dt).days)
+        except ValueError:
+            continue
+    return None
 
 
 def _reasons(materials_json: str | None) -> tuple[list[str], list[str]]:
@@ -107,40 +126,59 @@ def _md_escape(text: str) -> str:
     return (text or "").replace("|", "\\|").replace("\n", " ")
 
 
-def build_markdown(date: str, jobs: list[dict], new_urls: set | None = None) -> Path:
-    """Markdown report — renders on GitHub (viewable on your phone). Also writes
-    LATEST_MATCHES.md at the repo root so it's one click from the repo homepage."""
+def _age_label(d: int | None) -> str:
+    if d is None:
+        return "—"
+    if d <= 7:
+        return f"{d}d 🔥"
+    if d <= 30:
+        return f"{d}d"
+    return f"{d}d ⏳"      # stale (>30d), sorted to the bottom
+
+
+def build_markdown(date: str, rows: list[dict], new_urls: set | None = None) -> Path:
+    """Markdown report from enriched rows. Writes a dated+timestamped file into
+    matches/ AND updates LATEST_MATCHES.md (one-click view on GitHub).
+
+    Each row: {score, title, company, location, url, reasons[list], posted, days_old, new}
+    """
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
-    new_urls = new_urls or set()
-    strong = sum(1 for j in jobs if (j.get("score") or 0) >= 85)
-    new_count = sum(1 for j in jobs if j.get("url") in new_urls)
+    MATCHES_DIR.mkdir(parents=True, exist_ok=True)
+    stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d_%H%M")
+    strong = sum(1 for r in rows if (r.get("score") or 0) >= 85)
+    new_count = sum(1 for r in rows if r.get("new"))
+    recent = sum(1 for r in rows if (r.get("days_old") is not None and r["days_old"] <= 30))
 
     lines = [
-        f"# Job Matches — {date}",
+        f"# Job Matches — {stamp} UTC",
         "",
-        f"**{len(jobs)} matches** at GCC / product companies in **Bangalore & Hyderabad** "
-        f"· 🆕 {new_count} new today · {strong} strong (85+) · matched to your ~3-yr "
-        f"AI/GenAI profile. Apply to the ones you like.",
+        f"**{len(rows)} matches** at GCC / product companies in **Bangalore & Hyderabad** "
+        f"· 🆕 {new_count} new · 🔥 {recent} posted within 30 days · {strong} strong (85+) "
+        f"· matched to your ~3-yr AI/GenAI profile.",
         "",
-        "| # | Score | New | Role | Company · Location | Why it fits | Apply |",
-        "|---|------|-----|------|--------------------|-------------|-------|",
+        "Sorted: recent + best-fit first; roles older than 30 days (⏳) sink to the bottom.",
+        "",
+        "| # | Score | New | Age | Role | Company · Location | Why it fits | Apply |",
+        "|---|------|-----|-----|------|--------------------|-------------|-------|",
     ]
-    for i, j in enumerate(jobs, 1):
-        reasons, _ = _reasons(j.get("materials"))
-        why = _md_escape("; ".join(reasons[:2])) if reasons else ""
-        score = j.get("score") or 0
+    for i, r in enumerate(rows, 1):
+        reasons = r.get("reasons") or []
+        why = _md_escape("; ".join(reasons[:2]))
+        score = r.get("score") or 0
         badge = "🟢" if score >= 85 else "🟡" if score >= 75 else "⚪"
-        new = "🆕" if j.get("url") in new_urls else ""
+        new = "🆕" if r.get("new") else ""
         lines.append(
-            f"| {i} | {badge} {score} | {new} | {_md_escape(j.get('title'))} | "
-            f"{_md_escape(j.get('company'))} · {_md_escape(j.get('location'))} | "
-            f"{why} | [Apply]({j.get('url')}) |"
+            f"| {i} | {badge} {score} | {new} | {_age_label(r.get('days_old'))} | "
+            f"{_md_escape(r.get('title'))} | "
+            f"{_md_escape(r.get('company'))} · {_md_escape(r.get('location'))} | "
+            f"{why} | [Apply]({r.get('url')}) |"
         )
-    lines += ["", "---", f"*Auto-updated daily at 6 AM IST. Last run: {date}.*", ""]
+    lines += ["", "---",
+              f"*Auto-updated daily at 6 AM IST. Snapshot: {stamp} UTC. "
+              "Older snapshots are in the [matches/](matches/) folder.*", ""]
     md = "\n".join(lines)
 
-    path = REPORTS_DIR / f"daily_{date}.md"
-    path.write_text(md, encoding="utf-8")
-    # also update the repo-root pointer file
+    dated = MATCHES_DIR / f"matches_{stamp}.md"
+    dated.write_text(md, encoding="utf-8")
     (config.ROOT / "LATEST_MATCHES.md").write_text(md, encoding="utf-8")
-    return path
+    return dated
