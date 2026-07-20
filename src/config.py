@@ -81,6 +81,9 @@ JOB_LOCATIONS = _split(JOB_LOCATION) or ["India"]
 JOB_REMOTE = os.getenv("JOB_REMOTE", "true").strip().lower() in ("1", "true", "yes")
 MATCH_THRESHOLD = int(os.getenv("MATCH_THRESHOLD", "70"))
 MAX_JOBS_PER_RUN = int(os.getenv("MAX_JOBS_PER_RUN", "25"))
+# How many top matches to also write a full tailored cover-letter packet for.
+# 0 keeps the daily run cheap (scoring only) — good for free LLM tiers.
+TAILOR_TOP = int(os.getenv("TAILOR_TOP", "0"))
 
 # --- Applicant contact ---
 FULL_NAME = os.getenv("FULL_NAME", "").strip()

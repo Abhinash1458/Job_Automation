@@ -19,7 +19,7 @@ def _today() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
 
-def run(tailor_top: int = 20, fresh: bool = False) -> str:
+def run(tailor_top: int | None = None, fresh: bool = False) -> str:
     """Run the daily pipeline.
 
     Surfaces ALL jobs that closely match the resume (score >= MATCH_THRESHOLD),
@@ -27,6 +27,8 @@ def run(tailor_top: int = 20, fresh: bool = False) -> str:
     every run is a full snapshot of current matches even without a persistent DB.
     """
     config.require_llm()
+    if tailor_top is None:
+        tailor_top = config.TAILOR_TOP
     profile = resume_parser.load_profile()
 
     print("[1/6] Refreshing GCC directory ...")
