@@ -7,7 +7,7 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: write   # allow committing the generated report back to the repo
+  contents: read
 
 jobs:
   match:
@@ -15,7 +15,7 @@ jobs:
     env:
       GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
       APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
-      # Search config (override here or via repo Variables if you prefer)
+      # Search config
       JOB_KEYWORDS: "AI Engineer, GenAI Engineer, Machine Learning Engineer, LLM Engineer, Agentic AI, Python Developer"
       JOB_LOCATION: "Bangalore, Hyderabad"
       JOB_REMOTE: "false"
@@ -34,22 +34,26 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-ci.txt
 
+      # Recreate the resume profile from a secret (kept out of the public repo)
+      - name: Restore resume profile
+        env:
+          PROFILE_JSON: ${{ secrets.PROFILE_JSON }}
+        run: |
+          mkdir -p data
+          printf '%s' "$PROFILE_JSON" > data/profile.json
+          python -c "import json; json.load(open('data/profile.json')); print('profile.json OK')"
+
       - name: Run daily pipeline
         run: python -m src.main daily --fresh
 
-      - name: Commit the day's report
-        run: |
-          git config user.name "job-hunt-bot"
-          git config user.email "actions@github.com"
-          git add data/reports LATEST_MATCHES.md || true
-          git commit -m "Daily job matches $(date -u +%Y-%m-%d)" || echo "no changes"
-          git push || echo "nothing to push"
-
-      - name: Upload report as artifact
+      # Deliver results as a downloadable artifact (not committed to the repo).
+      - name: Upload matches
         uses: actions/upload-artifact@v4
         with:
-          name: job-matches
+          name: job-matches-${{ github.run_number }}
           path: |
-            data/reports/*.html
             data/reports/*.md
-          if-no-files-found: ignore
+            data/reports/*.html
+            LATEST_MATCHES.md
+          if-no-files-found: warn
+          retention-days: 30
