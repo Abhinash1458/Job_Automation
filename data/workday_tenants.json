@@ -1,0 +1,6 @@
+{
+  "Broadcom": {"tenant": "broadcom", "dc": "wd1", "site": "External_Career"},
+  "Broadridge": {"tenant": "broadridge", "dc": "wd5", "site": "Careers"},
+  "Fidelity": {"tenant": "fil", "dc": "wd3", "site": "001"},
+  "Dell": {"tenant": "dell", "dc": "wd1", "site": "External"}
+}

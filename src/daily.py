@@ -63,7 +63,10 @@ def run(tailor_top: int | None = None, fresh: bool = False) -> str:
 
     # 1) Company boards (Greenhouse/Lever/Ashby/SmartRecruiters/Recruitee, no key)
     _add(company_scraper.company_boards(config.JOB_KEYWORDS), "company boards")
-    # 2) Adzuna aggregator (free key) — India jobs, filtered to the allowlist
+    # 2) Workday JSON API for big GCCs/banks (curated tenants, no key)
+    from .scrapers import workday
+    _add(workday.scrape(config.JOB_KEYWORDS), "workday")
+    # 3) Adzuna aggregator (free key) — India jobs incl. Naukri/LinkedIn/Indeed
     _add(company_scraper.adzuna(config.JOB_KEYWORDS, config.JOB_LOCATIONS), "adzuna")
     # 3) Apify (only if a token + paid actor is configured)
     if config.APIFY_TOKEN:
