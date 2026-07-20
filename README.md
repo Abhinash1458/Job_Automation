@@ -115,11 +115,15 @@ python -m src.main run       # single scrape -> score -> tailor -> draft outreac
 
 ## Optional integrations
 
-### Apify (paid, better job coverage)
-Set `APIFY_TOKEN` in `.env` (from <https://apify.com/> → Settings → Integrations).
-`APIFY_JOBS_ACTOR` defaults to a LinkedIn jobs actor. If you swap actors, adjust
-the input/field mapping in `src/scrapers/apify_scraper.py`. Without a token the
-pipeline uses free public job APIs (Remotive, Arbeitnow) automatically.
+### Job sources (all free)
+The daily pipeline pulls jobs from, in order:
+1. **Greenhouse + Lever** company boards — no key. Probes each company in
+   `data/companies.xlsx` directly and keeps Bangalore/Hyderabad AI roles.
+2. **Adzuna** aggregator — free key from <https://developer.adzuna.com/> (no card).
+   Set `ADZUNA_APP_ID` + `ADZUNA_APP_KEY`. Broad India coverage, filtered to your
+   company allowlist.
+3. **Apify** — optional and now needs a *paid* actor, so it's off unless you set
+   `APIFY_TOKEN`.
 
 ### Push drafts to Gmail "Drafts"
 Set `GMAIL_ADDRESS` and `GMAIL_APP_PASSWORD` (a 16-char Google **App Password**,

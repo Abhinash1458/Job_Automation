@@ -34,20 +34,28 @@ def run(tailor_top: int = 20, fresh: bool = False) -> str:
     print(f"      {total} GCCs in allowlist")
 
     print(f"[2/6] Scraping jobs for {config.JOB_KEYWORDS} in {config.JOB_LOCATIONS} ...")
+    from .scrapers import company_scraper
     raw: list[dict] = []
     seen_urls: set[str] = set()
-    for loc in config.JOB_LOCATIONS:
-        for j in scrape_jobs(config.JOB_KEYWORDS, loc, config.MAX_JOBS_PER_RUN):
+
+    def _add(jobs: list[dict], label: str) -> None:
+        n = 0
+        for j in jobs:
             if j.get("url") and j["url"] not in seen_urls:
                 seen_urls.add(j["url"])
                 raw.append(j)
-    # LinkedIn job-alert emails (only if a Gmail app password is configured)
-    from .scrapers import email_scraper
-    for j in email_scraper.scrape():
-        if j.get("url") and j["url"] not in seen_urls:
-            seen_urls.add(j["url"])
-            raw.append(j)
-    print(f"      {len(raw)} raw jobs")
+                n += 1
+        print(f"      {label}: {n}")
+
+    # 1) Company boards (Greenhouse/Lever, no key) — targets your Excel companies
+    _add(company_scraper.greenhouse_lever(config.JOB_KEYWORDS), "greenhouse/lever")
+    # 2) Adzuna aggregator (free key) — India jobs, filtered to the allowlist
+    _add(company_scraper.adzuna(config.JOB_KEYWORDS, config.JOB_LOCATIONS), "adzuna")
+    # 3) Apify (only if a token + paid actor is configured)
+    if config.APIFY_TOKEN:
+        for loc in config.JOB_LOCATIONS:
+            _add(scrape_jobs(config.JOB_KEYWORDS, loc, config.MAX_JOBS_PER_RUN), f"apify {loc}")
+    print(f"      {len(raw)} raw jobs total")
 
     print("[3/6] Filtering to GCC / product companies ...")
     gcc_jobs = [j for j in raw if gcc_directory.is_gcc(j.get("company", ""))]

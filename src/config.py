@@ -65,9 +65,13 @@ if LLM_PROVIDER != "anthropic" and LLM_MODEL.startswith("claude"):
     LLM_MODEL = _DEFAULT_MODELS[LLM_PROVIDER]
 CLAUDE_MODEL = LLM_MODEL  # back-compat alias
 
-# --- Apify ---
+# --- Apify (optional; default actor is paid) ---
 APIFY_TOKEN = os.getenv("APIFY_TOKEN", "").strip()
 APIFY_JOBS_ACTOR = os.getenv("APIFY_JOBS_ACTOR", "bebity/linkedin-jobs-scraper").strip()
+
+# --- Adzuna (free job API; https://developer.adzuna.com/) ---
+ADZUNA_APP_ID = os.getenv("ADZUNA_APP_ID", "").strip()
+ADZUNA_APP_KEY = os.getenv("ADZUNA_APP_KEY", "").strip()
 
 # --- Search preferences ---
 JOB_KEYWORDS = _split(os.getenv("JOB_KEYWORDS", "Python Developer"))
