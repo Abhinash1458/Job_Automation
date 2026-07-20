@@ -6,6 +6,8 @@ heuristic if the LLM errors (e.g. rate limit) so the daily list is never empty.
 """
 from __future__ import annotations
 
+import re
+
 from . import llm
 
 _SCHEMA = {
@@ -22,9 +24,14 @@ _SCHEMA = {
 }
 
 _SYSTEM = (
-    "You are a pragmatic technical recruiter. Score how well a candidate fits a job "
-    "on a 0-100 scale, weighing required skills, seniority, and role relevance. "
-    "Be realistic: a perfect keyword match with wrong seniority is not a strong fit."
+    "You are a pragmatic technical recruiter scoring how well a candidate fits a job "
+    "on a 0-100 scale. Weigh THREE things equally: (1) skills overlap, (2) role "
+    "relevance, and (3) SENIORITY/EXPERIENCE fit. Seniority is critical: the "
+    "candidate's years of experience must roughly match the role. A role needing "
+    "many more years than the candidate has is a POOR fit (score it low, 40-60) even "
+    "if the skills match perfectly — flag the gap in 'missing'. Favor roles within "
+    "about +/-2 years of the candidate's experience. State the seniority judgement in "
+    "your reasons."
 )
 
 
@@ -38,17 +45,29 @@ def _compact_profile(profile: dict) -> str:
     )
 
 
+_SENIOR_TITLE = re.compile(
+    r"\b(staff|principal|director|\bvp\b|head\s+of|distinguished|fellow|chief|"
+    r"architect|senior\s+manager|lead)\b", re.I)
+
+
 def heuristic_score(profile: dict, job: dict) -> dict:
-    """Cheap local fallback: skill/keyword overlap. No API call."""
+    """Cheap local fallback: skill overlap, penalised for seniority mismatch."""
     terms = [s.lower() for s in profile.get("skills", []) + profile.get("preferred_roles", [])]
-    text = f"{job.get('title','')} {job.get('description','')}".lower()
+    title = job.get("title", "")
+    text = f"{title} {job.get('description','')}".lower()
     hits = sorted({t for t in terms if t and t in text})
-    # these jobs already passed the GCC + AI-title filter, so start from a
-    # relevant baseline and add for each matched skill.
-    score = min(96, 74 + len(hits) * 4)
+    score = 74 + len(hits) * 4
+    missing = []
+    # seniority penalty for a ~mid-level candidate
+    if _SENIOR_TITLE.search(title):
+        score -= 22
+        missing.append("role likely needs more years than the candidate has")
+    elif re.search(r"\bsenior\b|\bsr\.?\b", title, re.I):
+        score -= 8
+    score = max(35, min(96, score))
     verdict = "strong" if score >= 85 else "good" if score >= 70 else "weak"
     reasons = [f"Keyword match: {', '.join(hits[:6])}"] if hits else ["Title relevant to target roles"]
-    return {"score": score, "verdict": verdict, "reasons": reasons, "missing": []}
+    return {"score": score, "verdict": verdict, "reasons": reasons, "missing": missing}
 
 
 def score_job(profile: dict, job: dict) -> dict:

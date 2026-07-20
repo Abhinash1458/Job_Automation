@@ -17,12 +17,13 @@ jobs:
       APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
       ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
       ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY }}
-      # Search config
-      JOB_KEYWORDS: "AI Engineer, GenAI Engineer, Machine Learning Engineer, LLM Engineer, Agentic AI, Python Developer"
+      # Search config — broad "similar to profile" AI/ML/data keywords
+      JOB_KEYWORDS: "AI Engineer, GenAI, Generative AI, Machine Learning, ML Engineer, LLM, Agentic AI, Applied Scientist, Applied AI, Data Scientist, NLP, MLOps, Deep Learning, AI/ML, Python Developer"
       JOB_LOCATION: "Bangalore, Hyderabad"
       JOB_REMOTE: "false"
-      MATCH_THRESHOLD: "75"
+      MATCH_THRESHOLD: "70"
       MAX_JOBS_PER_RUN: "100"
+      TAILOR_TOP: "0"
       FULL_NAME: "Neelapalli Abhinash"
       EMAIL: "neelapalliabhinash1458@gmail.com"
 
@@ -53,7 +54,7 @@ jobs:
         run: |
           git config user.name "job-hunt-bot"
           git config user.email "actions@github.com"
-          git add -f LATEST_MATCHES.md
+          git add -f LATEST_MATCHES.md data/seen_jobs.json
           git commit -m "Job matches $(date -u +%Y-%m-%d)" || echo "no changes"
           git push || echo "nothing to push"
 

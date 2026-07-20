@@ -9,14 +9,26 @@
 """
 from __future__ import annotations
 
+import json
 from datetime import datetime, timezone
 
 from . import config, gcc_directory, matcher, report, resume_parser, tailor, tracker
 from .scrapers import scrape_jobs
 
+SEEN_PATH = config.DATA_DIR / "seen_jobs.json"
+
 
 def _today() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+
+def _load_seen() -> dict:
+    if SEEN_PATH.exists():
+        try:
+            return json.loads(SEEN_PATH.read_text(encoding="utf-8"))
+        except ValueError:
+            return {}
+    return {}
 
 
 def run(tailor_top: int | None = None, fresh: bool = False) -> str:
@@ -49,8 +61,8 @@ def run(tailor_top: int | None = None, fresh: bool = False) -> str:
                 n += 1
         print(f"      {label}: {n}")
 
-    # 1) Company boards (Greenhouse/Lever, no key) — targets your Excel companies
-    _add(company_scraper.greenhouse_lever(config.JOB_KEYWORDS), "greenhouse/lever")
+    # 1) Company boards (Greenhouse/Lever/Ashby/SmartRecruiters/Recruitee, no key)
+    _add(company_scraper.company_boards(config.JOB_KEYWORDS), "company boards")
     # 2) Adzuna aggregator (free key) — India jobs, filtered to the allowlist
     _add(company_scraper.adzuna(config.JOB_KEYWORDS, config.JOB_LOCATIONS), "adzuna")
     # 3) Apify (only if a token + paid actor is configured)
@@ -101,10 +113,19 @@ def run(tailor_top: int | None = None, fresh: bool = False) -> str:
                        materials=materials)
     print(f"      {len(close)} close matches surfaced")
 
-    print("[6/6] Writing daily reports (HTML + Markdown) ...")
+    # Track which jobs are new vs. previously seen (for the 🆕 marker).
+    seen = _load_seen()
+    new_urls = set()
+    for job in close:
+        if job["url"] not in seen:
+            new_urls.add(job["url"])
+            seen[job["url"]] = today
+    SEEN_PATH.write_text(json.dumps(seen, indent=2), encoding="utf-8")
+
+    print(f"[6/6] Writing daily reports ({len(new_urls)} new today) ...")
     jobs = tracker.top_for_review(today, 10000)
     html_path = report.build(today, jobs)
-    md_path = report.build_markdown(today, jobs)
+    md_path = report.build_markdown(today, jobs, new_urls)
     print(f"      HTML: {html_path}")
     print(f"      Markdown: {md_path}")
     return str(md_path)

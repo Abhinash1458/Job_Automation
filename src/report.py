@@ -107,32 +107,36 @@ def _md_escape(text: str) -> str:
     return (text or "").replace("|", "\\|").replace("\n", " ")
 
 
-def build_markdown(date: str, jobs: list[dict]) -> Path:
+def build_markdown(date: str, jobs: list[dict], new_urls: set | None = None) -> Path:
     """Markdown report — renders on GitHub (viewable on your phone). Also writes
     LATEST_MATCHES.md at the repo root so it's one click from the repo homepage."""
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+    new_urls = new_urls or set()
     strong = sum(1 for j in jobs if (j.get("score") or 0) >= 85)
+    new_count = sum(1 for j in jobs if j.get("url") in new_urls)
 
     lines = [
         f"# Job Matches — {date}",
         "",
-        f"**{len(jobs)} close matches** at GCC / product companies in Bangalore & Hyderabad "
-        f"· {strong} strong (85+) · ranked by fit to your resume. Apply to the ones you like.",
+        f"**{len(jobs)} matches** at GCC / product companies in **Bangalore & Hyderabad** "
+        f"· 🆕 {new_count} new today · {strong} strong (85+) · matched to your ~3-yr "
+        f"AI/GenAI profile. Apply to the ones you like.",
         "",
-        "| # | Score | Role | Company · Location | Why it fits | Apply |",
-        "|---|------|------|--------------------|-------------|-------|",
+        "| # | Score | New | Role | Company · Location | Why it fits | Apply |",
+        "|---|------|-----|------|--------------------|-------------|-------|",
     ]
     for i, j in enumerate(jobs, 1):
         reasons, _ = _reasons(j.get("materials"))
         why = _md_escape("; ".join(reasons[:2])) if reasons else ""
         score = j.get("score") or 0
         badge = "🟢" if score >= 85 else "🟡" if score >= 75 else "⚪"
+        new = "🆕" if j.get("url") in new_urls else ""
         lines.append(
-            f"| {i} | {badge} {score} | {_md_escape(j.get('title'))} | "
+            f"| {i} | {badge} {score} | {new} | {_md_escape(j.get('title'))} | "
             f"{_md_escape(j.get('company'))} · {_md_escape(j.get('location'))} | "
             f"{why} | [Apply]({j.get('url')}) |"
         )
-    lines += ["", "---", "*Generated automatically by the daily job-hunt pipeline.*", ""]
+    lines += ["", "---", f"*Auto-updated daily at 6 AM IST. Last run: {date}.*", ""]
     md = "\n".join(lines)
 
     path = REPORTS_DIR / f"daily_{date}.md"
