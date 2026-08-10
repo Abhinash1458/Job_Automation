@@ -1,0 +1,60 @@
+# Render.com blueprint for the Phase 3 stack.
+# Deploy: push to GitHub, then "New +" -> "Blueprint" on Render and point at this file.
+databases:
+  - name: jobhunt-db
+    databaseName: jobhunt
+    plan: free
+
+services:
+  # Managed Redis for the RQ worker queue.
+  - type: redis
+    name: jobhunt-redis
+    plan: free
+    ipAllowList: []
+
+  # Backend API
+  - type: web
+    name: jobhunt-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase: { name: jobhunt-db, property: connectionString }
+      - key: REDIS_URL
+        fromService: { name: jobhunt-redis, type: redis, property: connectionString }
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGINS
+        value: https://jobhunt-web.onrender.com
+      - key: GROQ_API_KEY
+        sync: false            # set in dashboard (secret)
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+
+  # RQ worker (same image, different command)
+  - type: worker
+    name: jobhunt-worker
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    dockerCommand: python worker.py
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase: { name: jobhunt-db, property: connectionString }
+      - key: REDIS_URL
+        fromService: { name: jobhunt-redis, type: redis, property: connectionString }
+      - key: GROQ_API_KEY
+        sync: false
+
+  # Frontend (Next.js)
+  - type: web
+    name: jobhunt-web
+    runtime: docker
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: https://jobhunt-api.onrender.com

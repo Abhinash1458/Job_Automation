@@ -1,0 +1,20 @@
+# Build context is the repo root; keep the image slim and free of personal data.
+.venv/
+**/__pycache__/
+**/*.pyc
+.git/
+frontend/
+docs/
+# Personal / local data — never bake into the image
+data/resume/
+data/profile.json
+data/jobs.db
+data/drafts/
+data/raw/
+data/reports/
+data/applications/
+data/logs/
+data/.browser/
+backend/.env
+backend/jobhunt.db
+backend/uploads/

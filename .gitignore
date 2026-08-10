@@ -32,3 +32,12 @@ data/reports/*
 !data/reports/.gitkeep
 # LATEST_MATCHES.md IS committed by CI so you can view it as one page on GitHub.
 # It contains only job listings + fit notes (no resume / contact details).
+
+# --- SaaS webapp (Phase 1) ---
+backend/.env
+backend/jobhunt.db
+backend/uploads/
+frontend/.env.local
+frontend/node_modules/
+frontend/.next/
+next-env.d.ts

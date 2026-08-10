@@ -1,0 +1,12 @@
+# Runtime deps the web API needs from the src/ pipeline (resume parse, scrape,
+# score). Deliberately excludes Playwright/Flask/Apify — those are only used by
+# the original CLI (assisted-apply / local review app), not the SaaS API.
+anthropic>=0.69
+openai>=1.40
+python-dotenv>=1.0
+requests>=2.32
+beautifulsoup4>=4.12
+pypdf>=5.0
+python-docx>=1.1
+openpyxl>=3.1
+rich>=13.7

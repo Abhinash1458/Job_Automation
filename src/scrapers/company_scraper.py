@@ -261,7 +261,10 @@ greenhouse_lever = company_boards
 
 # ------------------------------- Adzuna -------------------------------------
 
-def adzuna(keywords: list[str], locations: list[str], per_page: int = 50) -> list[dict]:
+def adzuna(keywords: list[str], locations: list[str], per_page: int = 50,
+          gcc_only: bool = True) -> list[dict]:
+    """Query Adzuna. gcc_only=True keeps only known GCC employers (CLI default);
+    pass gcc_only=False to let the SaaS surface startups/product/service too."""
     if not (config.ADZUNA_APP_ID and config.ADZUNA_APP_KEY):
         return []
     jobs: list[dict] = []
@@ -279,7 +282,7 @@ def adzuna(keywords: list[str], locations: list[str], per_page: int = 50) -> lis
                 for j in r.json().get("results", []):
                     company = (j.get("company") or {}).get("display_name", "")
                     loc = (j.get("location") or {}).get("display_name", city)
-                    if not gcc_directory.is_gcc(company):
+                    if gcc_only and not gcc_directory.is_gcc(company):
                         continue
                     if _too_senior(j.get("title", "")) or not _in_target_city(loc):
                         continue

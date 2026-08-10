@@ -1,0 +1,70 @@
+# Full Phase 3 stack: Postgres + Redis + API + RQ worker + Next.js frontend.
+#   docker compose up --build
+# LLM keys are read from the repo-root .env (GROQ_API_KEY / ANTHROPIC_API_KEY, ...).
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: jobhunt
+      POSTGRES_PASSWORD: jobhunt
+      POSTGRES_DB: jobhunt
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jobhunt"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    env_file:
+      - .env                       # LLM + scraper keys (GROQ_API_KEY, etc.)
+    environment:
+      DATABASE_URL: postgresql+psycopg://jobhunt:jobhunt@db:5432/jobhunt
+      REDIS_URL: redis://redis:6379/0
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-prod}
+      CORS_ORIGINS: http://localhost:3000
+      # RAZORPAY_KEY_ID / _SECRET optional — omitted = billing runs in mock mode
+    depends_on:
+      db: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    ports:
+      - "8000:8000"
+
+  worker:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: python worker.py
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://jobhunt:jobhunt@db:5432/jobhunt
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      db: { condition: service_healthy }
+      redis: { condition: service_healthy }
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:

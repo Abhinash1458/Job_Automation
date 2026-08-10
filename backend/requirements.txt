@@ -1,0 +1,21 @@
+# Web SaaS backend (Phase 1). Reuses the existing src/ pipeline modules.
+# Unpinned on purpose: this repo runs Python 3.14, so we let pip pick wheels
+# that ship 3.14 binaries (and reuse the pydantic already installed via anthropic).
+fastapi
+uvicorn[standard]
+sqlalchemy
+pydantic>=2.11
+pydantic-settings
+python-jose[cryptography]
+bcrypt
+python-multipart
+email-validator
+# --- Phase 3 ---
+alembic                    # DB migrations (Postgres/prod path)
+razorpay                   # billing (India-first); billing runs in MOCK mode without keys
+redis                      # optional: only used when REDIS_URL is set
+rq                         # optional: RQ worker for background match runs
+
+# Postgres driver — OPTIONAL. SQLite works out of the box.
+# Install only when you point DATABASE_URL at Postgres:
+#   pip install "psycopg[binary]"   (then use postgresql+psycopg://... in DATABASE_URL)
